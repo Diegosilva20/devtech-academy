@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>DevTech Academy</title>
+</head>
+<body>
+    <h1>Gerencia de Alunos</h1>
+    <form id="alunoForm">
+        <input type="text" id="nome" placeholder="Nome" required>
+        <input type="number" id="idade" placeholder="Idade" required>
+        <select id="curso" required>
+            <option value="" selected>Selecione</option>
+            <option value="JavaScript">JavaScript</option>
+            <option value="Python">Python</option>
+            <option value="Java">Java</option>
+        </select>
+        <input type="number" id="notaFinal" placeholder="Nota Final" required>
+        <button type="submit">Cadastrar</button>
+    </form>
+    <table id="alunosTable">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>idade</th>
+                <th>Curso</th>
+                <th>Nota Final</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <script src="script.js"></script>
+</body>
+</html>
