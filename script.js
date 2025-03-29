@@ -11,43 +11,52 @@ class Aluno {
     }
 
     toString() {
-        return '${this.nome}, ${this.idade}, anos, Curso: ${this.curso}, Nota: ${this.notaFinal}';
-    }
+        return `${this.nome}, ${this.idade} anos, Curso: ${this.curso}, Nota: ${this.notaFinal}`;
+    }   
 }
 
 let alunos = [];
 let editando = false;
 let editIndex = null;
 //
-document.getElementById("alunoForm").onsubmit = function (e){
+document.getElementById("alunoForm").addEventListener("submit", function (e) {
     e.preventDefault(); 
     
+    console.log("Evento submit disparado");
+
     const nome = document.getElementById("nome").value;
     const idade = document.getElementById("idade").value;
     const curso = document.getElementById("curso").value;
     const notaFinal = document.getElementById("notaFinal").value;
 
+    console.log("Valores capturados:", { nome, idade, curso, notaFinal });
+
     const aluno =  new Aluno(nome, idade, curso, notaFinal);
+
+    console.log("Aluno criado:", aluno);
 
     if (editando) {
         alunos[editIndex] = aluno;
+        alert("Aluno editado com sucesso: " + aluno.nome);
+        console.log("Aluno editado:", aluno);
         editando = false;
         editIndex = null;
         document.querySelector("#alunoForm button").textContent = "Cadastrar";
     } else {
         alunos.push(aluno);
+        alert("Aluno cadastrado com sucesso: " + aluno.nome);
+        console.log("Aluno cadastrado:", aluno);
     }
     
     renderTable();
 
     this.reset();
-};
+});
 
-function renderTable(){
+const renderTable = () => {
     const tbody = document.querySelector("#alunosTable tbody");
     tbody.innerHTML = "";
-    for(let i = 0; i < alunos.length;i++){
-        const aluno = alunos[i];
+    alunos.forEach((aluno, i) => {
         const row = document.createElement("tr");
         row.innerHTML = `
             <td>${aluno.nome}</td>
@@ -55,20 +64,35 @@ function renderTable(){
             <td>${aluno.curso}</td>
             <td>${aluno.notaFinal}</td>
             <td>
-                <button onclick="editAluno(${i})">Editar</button>
-                <button onclick="deleteAluno(${i})">Excluir</button>
+                <button class="edit-btn">Editar</button>
+                <button class="delete-btn">Excluir</button>
             </td>
         `;
         tbody.appendChild(row);
-    }
-}
 
-function deleteAluno(index) {
+        const editBtn = row.querySelector(".edit-btn");
+        const deleteBtn = row.querySelector(".delete-btn");
+
+        editBtn.addEventListener("click", function () {
+            console.log("Botão Editar clicado, índice:", i);
+            editAluno(i);
+            alert("Editando aluno: " + aluno.nome);
+        });
+
+        deleteBtn.addEventListener("click", function () {
+            console.log("Botão Excluir clicado, índice:", i);
+            deleteAluno(i);
+            alert("Aluno excluído: " + aluno.nome);
+        });
+    });
+};
+
+const deleteAluno = (index) => {
     alunos.splice(index, 1);
     renderTable();
-}
+};
 
-function editAluno(index) {
+const editAluno = (index) => {
     const aluno = alunos[index];
     document.getElementById("nome").value = aluno.nome;
     document.getElementById("idade").value = aluno.idade;
@@ -77,5 +101,5 @@ function editAluno(index) {
     editando = true;
     editIndex = index;  
     document.querySelector("#alunoForm button").textContent = "Salvar";
-}
+};
 
