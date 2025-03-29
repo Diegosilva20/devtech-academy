@@ -103,3 +103,68 @@ const editAluno = (index) => {
     document.querySelector("#alunoForm button").textContent = "Salvar";
 };
 
+const exibirRelatorio = (titulo, conteudo) => {
+    const output = document.getElementById("relatoriosOutput");
+    output.innerHTML = `<h3>${titulo}</h3><p>${conteudo}</p>`;
+};
+
+const listarAprovados = () => {
+    const aprovados = alunos.filter(aluno => aluno.isAprovado());
+    if (aprovados.length === 0) {
+        exibirRelatorio("Alunos Aprovados", "Nenhum aluno aprovado encontrado.");
+    } else {
+        const lista = aprovados.map(aluno => aluno.toString()).join("<br>");
+        exibirRelatorio("Alunos Aprovados", lista);
+    }
+};
+
+const calcularMediaNotas = () => {
+    if (alunos.length === 0) {
+        exibirRelatorio("Média das Notas Finais", "Nenhum aluno cadastrado.");
+        return;
+    }
+    const somaNotas = alunos.reduce((soma, aluno) => soma + parseFloat(aluno.notaFinal), 0);
+    const media = (somaNotas / alunos.length).toFixed(2);
+    exibirRelatorio("Média das Notas Finais", `Média: ${media}`);
+};
+
+const calcularMediaIdades = () => {
+    if (alunos.length === 0) {
+        exibirRelatorio("Média das Idades", "Nenhum aluno cadastrado.");
+        return;
+    }
+    const somaIdades = alunos.reduce((soma, aluno) => soma + parseInt(aluno.idade), 0);
+    const media = (somaIdades / alunos.length).toFixed(2);
+    exibirRelatorio("Média das Idades", `Média: ${media}`);
+};
+
+const listarNomesOrdemAlfabetica = () => {
+    if (alunos.length === 0) {
+        exibirRelatorio("Nomes em Ordem Alfabética", "Nenhum aluno cadastrado.");
+        return;
+    }
+    const nomesOrdenados = alunos
+        .map(aluno => aluno.nome)
+        .sort((a, b) => a.localeCompare(b))
+        .join("<br>");
+    exibirRelatorio("Nomes em Ordem Alfabética", nomesOrdenados);
+};
+
+const contarAlunosPorCurso = () => {
+    if (alunos.length === 0) {
+        exibirRelatorio("Quantidade de Alunos por Curso", "Nenhum aluno cadastrado.");
+        return;
+    }
+    const cursos = ["JavaScript", "Python", "Java"];
+    const contagem = cursos.map(curso => {
+        const quantidade = alunos.filter(aluno => aluno.curso === curso).length;
+        return `${curso}: ${quantidade}`;
+    }).join("<br>");
+    exibirRelatorio("Quantidade de Alunos por Curso", contagem);
+};
+
+document.getElementById("listarAprovados").addEventListener("click", listarAprovados);
+document.getElementById("mediaNotas").addEventListener("click", calcularMediaNotas);
+document.getElementById("mediaIdades").addEventListener("click", calcularMediaIdades);
+document.getElementById("nomesOrdemAlfabetica").addEventListener("click", listarNomesOrdemAlfabetica);
+document.getElementById("alunosPorCurso").addEventListener("click", contarAlunosPorCurso);
