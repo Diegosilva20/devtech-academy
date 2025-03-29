@@ -1,3 +1,20 @@
+class Aluno {
+    constructor (nome, idade, curso, notaFinal) {
+        this.nome = nome;
+        this.idade = idade;
+        this.curso = curso;
+        this.notaFinal = notaFinal;
+    }
+
+    isAprovado() {
+        return this.notaFinal >= 7;
+    }
+
+    toString() {
+        return '${this.nome}, ${this.idade}, anos, Curso: ${this.curso}, Nota: ${this.notaFinal}';
+    }
+}
+
 let alunos = [];
 let editando = false;
 let editIndex = null;
@@ -10,18 +27,14 @@ document.getElementById("alunoForm").onsubmit = function (e){
     const curso = document.getElementById("curso").value;
     const notaFinal = document.getElementById("notaFinal").value;
 
-    const aluno = {
-        nome: nome,
-        idade: idade,
-        curso: curso, 
-        notaFinal: notaFinal
-    };
-    if(editando){
+    const aluno =  new Aluno(nome, idade, curso, notaFinal);
+
+    if (editando) {
         alunos[editIndex] = aluno;
         editando = false;
         editIndex = null;
         document.querySelector("#alunoForm button").textContent = "Cadastrar";
-    } else{
+    } else {
         alunos.push(aluno);
     }
     
@@ -33,7 +46,6 @@ document.getElementById("alunoForm").onsubmit = function (e){
 function renderTable(){
     const tbody = document.querySelector("#alunosTable tbody");
     tbody.innerHTML = "";
-
     for(let i = 0; i < alunos.length;i++){
         const aluno = alunos[i];
         const row = document.createElement("tr");
@@ -48,7 +60,6 @@ function renderTable(){
             </td>
         `;
         tbody.appendChild(row);
-
     }
 }
 
